@@ -1,3 +1,40 @@
+# Mediscan
+
+## First Meeting - 3 January 2018
+
+### Discussion
+- Focus on ensuring that patients take their medication and not only reminding them that they need to take it
+- Twilio provides a full end-to-end solution for cron-job notification
+- A problem with the condition about sending a message to the patient
+    - Temporary solution:
+        * Have is to group a message by frequency of medication, user
+        * Send a message for each medication (spam)
+### Technical
+- Backend: NodeJS
+- Schema:
+1. Medication
+    * Medication Identification
+    * Name: String
+    * Quantity: Number
+    * Unit: String
+    * Remarks: String
+    * Frequency: Number
+2. Prescription
+    * Prescription Identification
+    * Medication Identictation: Array
+    * Phone Number: Number
+3. Message
+    * Message Identification
+    * Prescription Identification
+    * Medicine Identification
+    * Responded: Boolean
+    * Sent Time: Time
+
+- Two Cron-jobs in the server:
+1. Send reminders about a prescription
+2. *Stash unconfirmed medication taken/Log* (2nd phase)
+
+
 <a href="https://www.twilio.com">
   <img src="https://static0.twilio.com/marketing/bundles/marketing/img/logos/wordmark-red.svg" alt="Twilio" width="250" />
 </a>
