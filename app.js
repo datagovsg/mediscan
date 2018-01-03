@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 
 const appointments = require('./routes/appointments');
 const prescriptions = require('./routes/prescriptions');
+const messages = require('./routes/messages');
 const scheduler = require('./scheduler');
 
 const app = express();
@@ -26,9 +27,17 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.locals.moment = require('moment');
 
-app.use('/appointments', appointments);
-app.use('/prescriptions', prescriptions);
+// ROUTE
+
+// Appointments
 app.use('/', appointments);
+app.use('/appointments', appointments);
+
+// Prescriptions
+app.use('/prescriptions', prescriptions);
+
+// Messages
+app.use('/messages', messages);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
