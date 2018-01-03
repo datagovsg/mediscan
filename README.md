@@ -1,9 +1,9 @@
 # Mediscan
 
-## First Meeting - 3 January 2018
+## Meeting - 3 January 2018
 
 ### Discussion
-- Focus on ensuring that patients take their medication and not only reminding them that they need to take it
+- Focus on ensuring that patients take their medication and not only reminding them about it
 - Twilio provides a full end-to-end solution for cron-job notification
 - A problem with the condition about sending a message to the patient
     - Temporary solution:
