@@ -3,7 +3,6 @@
 const mongoose = require('mongoose');
 
 const medicationSchema = new mongoose.Schema({
-  _id: Schema.Types.ObjectId,
   name: String,
   quantity: Number,
   units: String,

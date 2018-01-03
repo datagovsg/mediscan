@@ -6,8 +6,7 @@
     "start": "node ./bin/www",
     "db": "mkdir -p db && mongod --dbpath db",
     "dev": "nodemon ./bin/www",
-    "test":
-      "NODE_ENV=test && ./node_modules/.bin/eslint . && node_modules/mocha/bin/mocha test"
+    "test": "NODE_ENV=test && ./node_modules/.bin/eslint . && node_modules/mocha/bin/mocha test"
   },
   "description": "Node implementation of Appointment Reminders",
   "author": {
@@ -38,6 +37,7 @@
     "dotenv-safe": "^4.0.4",
     "eslint": "^3.19.0",
     "express": "~4.14.0",
+    "lodash": "^4.17.4",
     "moment": "^2.11.2",
     "moment-timezone": "^0.5.0",
     "mongoose": "^4.4.3",
