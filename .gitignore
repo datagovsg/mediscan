@@ -35,3 +35,6 @@ node_modules
 #local env file
 .env.local
 .env
+
+# MongoDB
+db/
