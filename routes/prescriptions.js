@@ -35,4 +35,13 @@ router.post('/', async (req, res) => {
   res.send();
 });
 
+// DELETE: /prescriptions
+router.delete('/:id', async (req, res) => {
+  const id = req.params.id;
+
+  await Prescription.find({id}).remove();
+
+  res.send();
+});
+
 module.exports = router;
