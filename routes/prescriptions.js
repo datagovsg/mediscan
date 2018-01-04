@@ -26,16 +26,6 @@ router.get('/', async (req, res) => {
   res.send(JSON.stringify(prescriptions));
 });
 
-// POST: /prescriptionis/remind
-router.post('/:id/remind', async (req, res) => {
-  const id = req.params.id;
-
-  const prescription = await Prescription.findOne({_id: id});
-  await prescription.sendReminder();
-
-  res.send();
-});
-
 // POST: /prescriptions
 router.post('/', async (req, res) => {
   const {name, phoneNumber} = req.body;

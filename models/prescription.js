@@ -49,20 +49,24 @@ prescriptionSchema.methods.sendReminder = async function() {
     return;
   }
 
-  const body = _.map(
-    medications,
-    ({name, quantity, units, frequency, remarks}) =>
-      `${name}, ${quantity} ${units}, ${frequency} times a day, ${remarks}`
-  ).join('\n');
-
-  await this.sendNotification(`Hi ${this.name},\n${body}`);
-
   const message = new Message({
     sentTime: Date.now(),
     repliedTime: null,
     medications: _.map(this.medications, (id) => mongoose.Types.ObjectId(id)),
   });
   await message.save();
+
+  const body = _.map(
+    medications,
+    ({name, quantity, units, frequency, remarks}) =>
+      `${name}, ${quantity} ${units}, ${remarks}`
+  ).join('\n');
+  const url = `${cfg.rootUrl}messages/${message._id}/reply`;
+  await this.sendNotification(
+    `Hi ${
+      this.name
+    },\n\n${body}\n\nClick ${url} after you have taken your medicine`
+  );
 };
 
 prescriptionSchema.methods.sendNotification = async function(body) {

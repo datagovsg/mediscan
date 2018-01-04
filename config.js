@@ -4,8 +4,9 @@ require('dotenv-safe').load();
 
 const cfg = {};
 
-// HTTP Port to run our web application
+// HTTP Port and URL to run our web application
 cfg.port = process.env.PORT || 3000;
+cfg.rootUrl = process.env.ROOT_URL || `http://localhost:${cfg.port}/`;
 
 // A random string that will help generate secure one-time passwords and
 // HTTP sessions
