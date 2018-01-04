@@ -8,7 +8,7 @@ const schedulerFactory = function() {
   return {
     start: function() {
       new CronJob(
-        '0 0,30 * * * *', // Every 30 minutes
+        '0 0 * * * *', // Every 60 minutes
         function() {
           console.log(
             'Running Send Notifications Worker for ' + moment().format()
