@@ -1,0 +1,71 @@
+extends ../layout
+
+block styles
+  link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.14.30/css/bootstrap-datetimepicker.min.css')
+  link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.min.css')
+
+block content
+  h2 Create New Prescription
+
+  form#formPrescription.form-horizontal.col-lg-5(name='formPrescription', method='POST', action='/prescriptions', data-parsley-validate='')
+    include _form
+
+    script.
+      function addMedication() {
+        $( "#medicationGroup" )
+          .append("<div class='panel panel-default'>\
+          <div class='panel-body'>\
+            <div class='form-group'>\
+              <label class='col-sm-5 control-label' for='inputName'>Medication Name *</label>\
+              <div class='col-sm-7'>\
+                <input class='form-control' id='inputMedication' type='text' name='medicine' placeholder='Medication Name' required='' data-parsley-maxlength='20' data-parsley-maxlength-message='This field can't have more than 20 characters' value='' data-parsley-id='8'>\
+              </div>\
+            </div>\
+            <div class='form-group'>\
+              <label class='col-sm-5 control-label' for='inputName'>Quantity *</label>\
+              <div class='col-sm-7'>\
+                <input class='form-control' id='inputQuantity' type='text' name='quantity' placeholder='Quantity' data-parsley-type='number' required='' value='' data-parsley-id='10'>\
+              </div>\
+            </div>\
+            <div class='form-group'>\
+              <label class='col-sm-5 control-label' for='inputUnit'>Units *</label>\
+              <div class='col-sm-7'>\
+                <input class='form-control' id='inputUnit' type='text' name='unit' placeholder='Unit' required='' data-parsley-maxlength='20' data-parsley-maxlength-message='This field can't have more than 20 characters' value='' data-parsley-id='12'>\
+              </div>\
+            </div>\
+            <div class='form-group'>\
+              <label class='col-sm-5 control-label' for='selectFrequency'>Frequency *</label>\
+              <div class='col-sm-7'>\
+                <select class='form-control' id='selectFrequency' name='frequency' required='' value='' data-parsley-id='14'>\
+                  <option selected='' value=''>Select a frequency</option>\
+                  <option value='1'>1 time a day</option>\
+                  <option value='2'>2 times a day</option>\
+                  <option value='3'>3 times a day</option>\
+                  <option value='4'>4 times a day</option>\
+                </select>\
+              </div>\
+            </div>\
+            <div class='form-group'>\
+              <label class='col-sm-5 control-label' for='inputRemarks'>Remarks</label>\
+              <div class='col-sm-7'>\
+                <input class='form-control' id='inputRemarks' type='text' name='remark' placeholder='Remarks' value='' data-parsley-id='16'>\
+              </div>\
+            </div>\
+          </div>\
+        </div>")
+      };
+
+    .form-group
+      .col-sm-offset-4.col-sm-8
+        button.btn.btn-default(onclick='addMedication()') Add Medication
+        button.btn.btn-default(type='submit') Create
+
+
+
+
+
+block scripts
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.min.js')
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js')
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.14.30/js/bootstrap-datetimepicker.min.js')
+  script(src='/js/datetime-picker.js')

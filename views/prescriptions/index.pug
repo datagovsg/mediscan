@@ -1,0 +1,22 @@
+extends ../layout
+
+block content
+  table.table
+      thead
+        tr
+          th ID
+          th Name
+          th Phone number
+          th Number of medication
+          th
+      tbody
+        each prescription in prescriptions
+          tr
+            td  !{prescription._id}
+            td  !{prescription.name}
+            td  !{prescription.phoneNumber}
+            td  !{prescription.medications.length}
+
+            td
+              form(action="/prescriptions/" + prescription._id + "/delete",method="POST")
+                button.btn.btn-danger.btn-sm(type='submit') Delete
