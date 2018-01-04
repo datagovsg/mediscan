@@ -8,7 +8,7 @@ const router = new express.Router();
 
 // GET: /messages
 router.get('/', async (req, res) => {
-  const messages = await Message.find();
+  const messages = await Message.find().select('-__v');
   res.send(JSON.stringify(messages));
 });
 

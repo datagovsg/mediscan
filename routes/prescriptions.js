@@ -9,7 +9,7 @@ const router = new express.Router();
 
 // GET: /prescriptions
 router.get('/', async (req, res) => {
-  const prescriptions = await Prescription.find();
+  const prescriptions = await Prescription.find().select('-__v');
   res.send(JSON.stringify(prescriptions));
 });
 
