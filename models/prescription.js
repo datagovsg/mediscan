@@ -2,10 +2,12 @@
 
 const _ = require('lodash');
 const mongoose = require('mongoose');
+const moment = require('moment');
 const Medication = require('./medication');
 const Message = require('./message');
 const cfg = require('../config');
 const Twilio = require('twilio');
+const {HOURS} = require('../constants');
 
 const prescriptionSchema = new mongoose.Schema({
   name: String,
@@ -13,10 +15,33 @@ const prescriptionSchema = new mongoose.Schema({
   medications: [{type: mongoose.Schema.Types.ObjectId, ref: 'Medication'}],
 });
 
+function getFrequenciesToRemind(hour) {
+  switch (hour) {
+    case HOURS.MORNING:
+      return [1, 2, 3, 4];
+    case HOURS.AFTERNOON:
+      return [3, 4];
+    case HOURS.EVENING:
+      return [2, 3, 4];
+    case HOURS.NIGHT:
+      return [4];
+    default:
+      return [];
+  }
+}
+
 prescriptionSchema.methods.sendReminder = async function() {
-  const medications = await Promise.all(
-    _.map(this.medications, (_id) => Medication.findOne({_id}).lean())
-  );
+  // Fetch all medications with reminders due
+  const frequencies = getFrequenciesToRemind(parseInt(moment().format('H')));
+  const medications = await Medication.find({
+    _id: {$in: this.medications},
+    frequency: {$in: frequencies},
+  }).lean();
+
+  if (_.isEmpty(medications)) {
+    console.log('No reminders due');
+    return;
+  }
 
   const body = _.map(
     medications,

@@ -15,13 +15,11 @@ router.get('/', async (req, res) => {
   // Map medication IDs to medication objects
   await Promise.all(
     _.map(prescriptions, async (prescription) => {
-      prescription.medications = await Promise.all(
-        _.map(prescription.medications, (_id) =>
-          Medication.findOne({_id})
-            .select('-__v')
-            .lean()
-        )
-      );
+      prescription.medications = await Medication.find({
+        _id: {$in: prescription.medications},
+      })
+        .select('-__v')
+        .lean();
     })
   );
 
