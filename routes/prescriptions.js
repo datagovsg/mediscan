@@ -30,11 +30,11 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   const {name, phoneNumber} = req.body;
 
+  // Create and save prescription and medications
   const medications = _.map(
     req.body.medications,
     (medication) => new Medication(medication)
   );
-
   const prescription = new Prescription({
     name,
     phoneNumber,
@@ -44,6 +44,9 @@ router.post('/', async (req, res) => {
     prescription.save(),
     ..._.map(medications, (medication) => medication.save()),
   ]);
+
+  // Send the first message
+  prescription.sendNotification(`Hi ${name},\n\nWelcome to Mediscan!`);
 
   res.send();
 });
