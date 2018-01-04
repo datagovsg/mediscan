@@ -30,6 +30,13 @@ function getFrequenciesToRemind(hour) {
   }
 }
 
+prescriptionSchema.statics.sendReminders = async function() {
+  const prescriptions = await Prescription.find();
+  await Promise.all(
+    _.map(prescriptions, (prescription) => prescription.sendReminder())
+  );
+};
+
 prescriptionSchema.methods.sendReminder = async function() {
   // Fetch all medications with reminders due
   const frequencies = getFrequenciesToRemind(parseInt(moment().format('H')));
@@ -39,7 +46,6 @@ prescriptionSchema.methods.sendReminder = async function() {
   }).lean();
 
   if (_.isEmpty(medications)) {
-    console.log('No reminders due');
     return;
   }
 

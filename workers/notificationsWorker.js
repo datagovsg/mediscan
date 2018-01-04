@@ -1,11 +1,11 @@
 'use strict';
 
-const Appointment = require('../models/appointment');
+const Prescription = require('../models/prescription');
 
 const notificationWorkerFactory = function() {
   return {
     run: function() {
-      Appointment.sendNotifications();
+      Prescription.sendReminders();
     },
   };
 };
