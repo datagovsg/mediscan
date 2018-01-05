@@ -4,31 +4,14 @@ const express = require('express');
 const momentTimeZone = require('moment-timezone');
 const moment = require('moment');
 const Appointment = require('../models/appointment');
+const Prescription = require('../models/prescription');
+// const Medication = require('../models/medication');
 const router = new express.Router();
 
 
 const getTimeZones = function() {
   return momentTimeZone.tz.names();
 };
-
-// GET: /appointments
-router.get('/', function(req, res, next) {
-  Appointment.find()
-    .then(function(appointments) {
-      res.render('appointments/index', {appointments: appointments});
-    });
-});
-
-// GET: /appointments/create
-router.get('/create', function(req, res, next) {
-  res.render('appointments/create', {
-    timeZones: getTimeZones(),
-    appointment: new Appointment({name: '',
-                                  phoneNumber: '',
-                                  notification: '',
-                                  timeZone: '',
-                                  time: ''})});
-});
 
 // POST: /appointments
 router.post('/', function(req, res, next) {

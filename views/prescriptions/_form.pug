@@ -1,0 +1,39 @@
+
+.form-group
+  label.col-sm-5.control-label(for='inputName') Name *
+  .col-sm-7
+    input#inputName.form-control(type='text', name='name', placeholder='Name', required='', data-parsley-maxlength='20', data-parsley-maxlength-message="This field can't have more than 20 characters", value=prescription.name)
+.form-group
+  label.col-sm-5.control-label(for='inputPhoneNumber') Phone Number *
+  .col-sm-7
+    input#inputPhoneNumber.form-control(type='text', name='phoneNumber', placeholder='Phone Number', required='', value=prescription.phoneNumber)
+
+.panel-group#medicationGroup
+  each medication, index in prescription.medications
+    .panel.panel-default
+      .panel-body
+        .form-group
+          label.col-sm-5.control-label(for='inputName') Medication Name *
+          .col-sm-7
+            input#inputMedication.form-control(type='text', name='medicine', placeholder='Medication Name', required='', data-parsley-maxlength='20', data-parsley-maxlength-message="This field can't have more than 20 characters", value=medication.name)
+        .form-group
+          label.col-sm-5.control-label(for='inputName') Quantity *
+          .col-sm-7
+            input#inputQuantity.form-control(type='text', name='quantity', placeholder='Quantity', data-parsley-type="number", required='', value=medication.quantity)
+        .form-group
+          label.col-sm-5.control-label(for='inputUnit') Units *
+          .col-sm-7
+            input#inputUnit.form-control(type='text', name='unit', placeholder='Unit', required='', data-parsley-maxlength='20', data-parsley-maxlength-message="This field can't have more than 20 characters", value=medication.units)
+        .form-group 
+          label.col-sm-5.control-label(for='selectFrequency') Frequency *
+          .col-sm-7
+            select#selectFrequency.form-control(name='frequency', required='', value=medication.frequency) 
+              option(selected=medication.frequency == '', value='') Select a frequency
+              option(selected=medication.frequency == '1', value='1') 1 time a day
+              option(selected=medication.frequency == '2', value='2') 2 times a day
+              option(selected=medication.frequency == '3', value='3') 3 times a day
+              option(selected=medication.frequency == '4', value='4') 4 times a day
+        .form-group
+          label.col-sm-5.control-label(for='inputRemarks') Remarks
+          .col-sm-7
+            input#inputRemarks.form-control(type='text', name='remark', placeholder='Remarks', value=medication.remarks)

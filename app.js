@@ -7,7 +7,6 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
-const appointments = require('./routes/appointments');
 const prescriptions = require('./routes/prescriptions');
 const messages = require('./routes/messages');
 const scheduler = require('./scheduler');
@@ -29,11 +28,8 @@ app.locals.moment = require('moment');
 
 // ROUTE
 
-// Appointments
-app.use('/', appointments);
-app.use('/appointments', appointments);
-
 // Prescriptions
+app.use('/', prescriptions);
 app.use('/prescriptions', prescriptions);
 
 // Messages
