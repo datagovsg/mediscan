@@ -73,11 +73,15 @@ prescriptionSchema.methods.sendNotification = async function(body) {
   const client = new Twilio(cfg.twilioAccountSid, cfg.twilioAuthToken);
 
   // Send the message!
-  await client.messages.create({
-    to: `+ ${this.phoneNumber}`,
-    from: cfg.twilioPhoneNumber,
-    body,
-  });
+  try {
+    await client.messages.create({
+      to: `+65 ${this.phoneNumber}`,
+      from: cfg.twilioPhoneNumber,
+      body,
+    });
+  } catch (e) {
+    console.error(e);
+  }
 
   // Log the last few digits of a phone number
   let masked = this.phoneNumber.substr(0, this.phoneNumber.length - 5);
