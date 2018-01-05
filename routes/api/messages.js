@@ -2,7 +2,7 @@
 
 const _ = require('lodash');
 const express = require('express');
-const Message = require('../models/message');
+const Message = require('../../models/message');
 const router = new express.Router();
 
 // GET: /messages

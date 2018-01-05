@@ -6,9 +6,11 @@ const path = require('path');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const prescriptions = require('./routes/prescriptions');
-const messages = require('./routes/messages');
+const prescriptionsApi = require('./routes/api/prescriptions');
+const messagesApi = require('./routes/api/messages');
 const scheduler = require('./scheduler');
 
 const app = express();
@@ -32,8 +34,10 @@ app.locals.moment = require('moment');
 app.use('/', prescriptions);
 app.use('/prescriptions', prescriptions);
 
-// Messages
-app.use('/messages', messages);
+// API
+app.use(cors());
+app.use('/api/prescriptions', prescriptionsApi);
+app.use('/api/messages', messagesApi);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

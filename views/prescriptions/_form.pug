@@ -1,12 +1,4 @@
 
-.form-group
-  label.col-sm-5.control-label(for='inputName') Name *
-  .col-sm-7
-    input#inputName.form-control(type='text', name='name', placeholder='Name', required='', data-parsley-maxlength='20', data-parsley-maxlength-message="This field can't have more than 20 characters", value=prescription.name)
-.form-group
-  label.col-sm-5.control-label(for='inputPhoneNumber') Phone Number *
-  .col-sm-7
-    input#inputPhoneNumber.form-control(type='text', name='phoneNumber', placeholder='Phone Number', required='', value=prescription.phoneNumber)
 
 .panel-group#medicationGroup
   each medication, index in prescription.medications

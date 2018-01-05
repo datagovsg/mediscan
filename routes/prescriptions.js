@@ -59,8 +59,9 @@ router.get('/prescriptions/create', function(req, res, next) {
           units: '',
           remarks: '',
           frequency: '',
-        }],
-      },
+        },
+      ],
+    },
   });
 });
 
@@ -75,7 +76,6 @@ router.post('/:id/remind', async (req, res) => {
 
 // POST: /prescriptions
 router.post('/', async (req, res) => {
-
   function convertArrayToMedication(input) {
     return new Medication({
       name: input[0],
@@ -86,17 +86,18 @@ router.post('/', async (req, res) => {
     });
   }
   try {
-    const {name, phoneNumber} = req.body;
-    var medications = [];
+    let medications = [];
     if (Array.isArray(req.body.medicine)) {
-      medications = _.zip(req.body.medicine,
+      medications = _.zip(
+        req.body.medicine,
         req.body.quantity,
         req.body.unit,
         req.body.frequency,
-        req.body.remark);
+        req.body.remark
+      );
       medications = medications.map(function(x) {
-          return convertArrayToMedication(x);
-        });
+        return convertArrayToMedication(x);
+      });
     } else {
       medications = [
         new Medication({
@@ -111,7 +112,6 @@ router.post('/', async (req, res) => {
 
     const prescription = new Prescription({
       name,
-      phoneNumber,
       medications,
     });
     await Promise.all([

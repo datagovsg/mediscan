@@ -10,8 +10,8 @@ const Twilio = require('twilio');
 const {HOURS} = require('../constants');
 
 const prescriptionSchema = new mongoose.Schema({
-  name: String,
-  phoneNumber: String,
+  patientPhoneNumber: String,
+  caregiverPhoneNumbers: [String],
   medications: [{type: mongoose.Schema.Types.ObjectId, ref: 'Medication'}],
 });
 
@@ -75,7 +75,7 @@ prescriptionSchema.methods.sendNotification = async function(body) {
   // Send the message!
   try {
     await client.messages.create({
-      to: `+65 ${this.phoneNumber}`,
+      to: `+65 ${this.patientPhoneNumber}`,
       from: cfg.twilioPhoneNumber,
       body,
     });
