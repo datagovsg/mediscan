@@ -85,33 +85,47 @@ router.post('/', async (req, res) => {
       remarks: input[4] || '',
     });
   }
+  try {
+    const {name, phoneNumber} = req.body;
+    var medications = [];
+    if (Array.isArray(req.body.medicine)) {
+      medications = _.zip(req.body.medicine,
+        req.body.quantity,
+        req.body.unit,
+        req.body.frequency,
+        req.body.remark);
+      medications = medications.map(function(x) {
+          return convertArrayToMedication(x);
+        });
+    } else {
+      medications = [
+        new Medication({
+          name: req.body.medicine,
+          quantity: req.body.quantity,
+          units: req.body.unit,
+          frequency: req.body.frequency,
+          remarks: req.body.remark,
+        }),
+      ];
+    }
 
-  const {name, phoneNumber} = req.body;
-  const medications = _.zip(req.body.medicine,
-    req.body.quantity,
-    req.body.unit,
-    req.body.frequency,
-    req.body.remark).map(x => convertArrayToMedication(x));
+    const prescription = new Prescription({
+      name,
+      phoneNumber,
+      medications,
+    });
+    await Promise.all([
+      prescription.save(),
+      ..._.map(medications, (medication) => medication.save()),
+    ]);
 
-  const medications = _.map(
-    req.body.medications,
-    (medication) => new Medication(medication)
-  );
+    // Send the first message
+    prescription.sendNotification(`Hi ${name},\n\nWelcome to Mediscan!`);
 
-  const prescription = new Prescription({
-    name,
-    phoneNumber,
-    medications,
-  });
-  await Promise.all([
-    prescription.save(),
-    ..._.map(medications, (medication) => medication.save()),
-  ]);
-
-  // Send the first message
-  prescription.sendNotification(`Hi ${name},\n\nWelcome to Mediscan!`);
-
-  res.redirect('/');
+    res.redirect('/');
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 // POST: /prescriptions/:id/delete
