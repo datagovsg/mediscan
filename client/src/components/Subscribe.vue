@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { API_URL } from '../constants'
+import { API_URL } from '../../../constants'
 
 export default {
   props: {
@@ -25,16 +25,30 @@ export default {
   },
 
   methods: {
-    submit () {
-      fetch(`${API_URL}/prescriptions/${this.id}/subscribe`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          phoneNumber: this.phoneNumber
+    async submit () {
+      try {
+        await fetch(`${API_URL}/prescriptions/${this.id}/subscribe`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            phoneNumber: this.phoneNumber
+          })
         })
-      })
+        this.$toast.open({
+          message: 'Done!',
+          type: 'is-success',
+          queue: false
+        })
+        this.$router.push(`verify/${this.phoneNumber}`)
+      } catch (e) {
+        this.$toast.open({
+          message: e,
+          type: 'is-danger',
+          queue: false
+        })
+      }
     }
   }
 }

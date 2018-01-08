@@ -4,6 +4,7 @@ const _ = require('lodash');
 const express = require('express');
 const Prescription = require('../../models/prescription');
 const Medication = require('../../models/medication');
+const PhoneNumber = require('../../models/phoneNumber');
 const router = new express.Router();
 
 // GET: /prescriptions
@@ -88,13 +89,11 @@ router.post('/', async (req, res) => {
   res.send();
 });
 
-// POST: /prescriptions/:id/subscribe
-router.post('/:id/subscribe', async (req, res) => {
+// DELETE: /prescriptions/:id
+router.delete('/:id', async (req, res) => {
+  const id = req.params.id;
   try {
-    await Prescription.update(
-      {_id: req.params.id},
-      {patientPhoneNumber: req.body.phoneNumber}
-    );
+    await Prescription.remove({_id: id});
   } catch (e) {
     console.error(e);
     res.status(500).send(e);
@@ -102,11 +101,43 @@ router.post('/:id/subscribe', async (req, res) => {
   res.send();
 });
 
-// DELETE: /prescriptions
-router.delete('/:id', async (req, res) => {
-  const id = req.params.id;
+// POST: /prescriptions/:id/subscribe
+// Generates and sends a random verification code to the specified phone number
+router.post('/:id/subscribe', async (req, res) => {
+  const verificationCode = Math.floor(Math.random() * 10000).toString();
   try {
-    await Prescription.remove({_id: id});
+    const prescription = await Prescription.findOne({_id: req.params.id});
+    const phoneNumber = new PhoneNumber({
+      phoneNumber: req.body.phoneNumber,
+      prescription: prescription,
+      verificationCode,
+    });
+    phoneNumber.sendVerificationCode();
+    await phoneNumber.save();
+  } catch (e) {
+    console.error(e);
+    res.status(500).send(e);
+  }
+  res.send();
+});
+
+// POST: /prescriptions/:id/verify
+// Checks the verification code and add to prescription if valid
+router.post('/:id/verify', async (req, res) => {
+  try {
+    const phoneNumber = await PhoneNumber.findOne({
+      phoneNumber: req.body.phoneNumber,
+      verificationCode: req.body.verificationCode,
+    });
+    if (phoneNumber !== undefined) {
+      await Prescription.update(
+        {_id: phoneNumber.prescription},
+        {patientPhoneNumber: phoneNumber.phoneNumber}
+      );
+      await phoneNumber.remove();
+      res.send();
+    }
+    res.status(404).send();
   } catch (e) {
     console.error(e);
     res.status(500).send(e);
