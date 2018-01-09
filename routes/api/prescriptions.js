@@ -5,6 +5,7 @@ const express = require('express');
 const Prescription = require('../../models/prescription');
 const Medication = require('../../models/medication');
 const PhoneNumber = require('../../models/phoneNumber');
+const Message = require('../../models/message');
 const router = new express.Router();
 
 // GET: /prescriptions
@@ -43,9 +44,8 @@ function convertArrayToMedication(input) {
 }
 
 // POST: /prescriptions
-router.post('/', async (req, res) => {
+router.post('/create', async (req, res) => {
   try {
-    const {name, phoneNumber} = req.body;
     let medications = [];
     if (Array.isArray(req.body.medicine)) {
       medications = _.zip(
@@ -71,9 +71,10 @@ router.post('/', async (req, res) => {
     }
 
     const prescription = new Prescription({
-      name,
-      phoneNumber,
-      medications,
+      name: req.body.patientName,
+      patientPhoneNumber: req.body.patientPhoneNumber,
+      caregiverPhoneNumbers: [req.body.caregiverPhoneNumber],
+      medications: medications,
     });
     await Promise.all([
       prescription.save(),
@@ -81,12 +82,13 @@ router.post('/', async (req, res) => {
     ]);
 
     // Send the first message
-    prescription.sendNotification(`Hi ${name},\n\nWelcome to Mediscan!`);
+    Message.sendMessage(req.body.patientPhoneNumber, 
+      `Hi ${req.body.name},\n\nWelcome to Mediscan!`);
   } catch (e) {
     console.error(e);
     res.status(500).send(e);
   }
-  res.send();
+  res.redirect('/');
 });
 
 // DELETE: /prescriptions/:id

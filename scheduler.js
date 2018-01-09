@@ -1,7 +1,7 @@
 'use strict';
 
 const CronJob = require('cron').CronJob;
-const notificationsWorker = require('./workers/notificationsWorker');
+const workers = require('./workers/notificationsWorker');
 const moment = require('moment');
 
 const schedulerFactory = function() {
@@ -13,7 +13,31 @@ const schedulerFactory = function() {
           console.log(
             'Running Send Notifications Worker for ' + moment().format()
           );
-          notificationsWorker.run();
+          workers.notificationWorkerFactory.run();
+        },
+        null,
+        true,
+        ''
+      );
+      new CronJob(
+        '0 00,30 * * * *', // Every 30 minutes
+        function() {
+          console.log(
+            'Running Send Retry Worker for ' + moment().format()
+          );
+          workers.retryWorkerFactory.run();
+        },
+        null,
+        true,
+        ''
+      );
+      new CronJob(
+        '0 00,30 * * * *', // Every 30 minutes
+        function() {
+          console.log(
+            'Running Send Notifications Worker for ' + moment().format()
+          );
+          workers.alertWorkerFactory.run();
         },
         null,
         true,

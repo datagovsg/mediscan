@@ -1,4 +1,15 @@
-
+.form-group
+  label.col-sm-6.control-label(for='inputName') Name *
+  .col-sm-6
+    input#inputName.form-control(type='text', name='name', required='', data-parsley-maxlength='20', data-parsley-maxlength-message="This field can't have more than 20 characters", value='')
+.form-group
+  label.col-sm-6.control-label(for='inputName') Patient Phone Number *
+  .col-sm-6
+    input#inputPatientNumber.form-control(type='text', name='patientPhoneNumber', placeholder='e.g. 91234567', required='', data-parsley-maxlength='20', data-parsley-maxlength-message="This field can't have more than 20 characters", value='')
+.form-group
+  label.col-sm-6.control-label(for='inputName') Caregiver Phone Number *
+  .col-sm-6
+    input#inputCaregivertNumber.form-control(type='text', name='caregiverPhoneNumber', placeholder='e.g. 91234567', data-parsley-maxlength='20', data-parsley-maxlength-message="This field can't have more than 20 characters", value='')
 
 .panel-group#medicationGroup
   each medication, index in prescription.medications
@@ -7,15 +18,15 @@
         .form-group
           label.col-sm-5.control-label(for='inputName') Medication Name *
           .col-sm-7
-            input#inputMedication.form-control(type='text', name='medicine', placeholder='Medication Name', required='', data-parsley-maxlength='20', data-parsley-maxlength-message="This field can't have more than 20 characters", value=medication.name)
+            input#inputMedication.form-control(type='text', name='medicine', placeholder='e.g. Panadol', required='', data-parsley-maxlength='20', data-parsley-maxlength-message="This field can't have more than 20 characters", value=medication.name)
         .form-group
           label.col-sm-5.control-label(for='inputName') Quantity *
           .col-sm-7
-            input#inputQuantity.form-control(type='text', name='quantity', placeholder='Quantity', data-parsley-type="number", required='', value=medication.quantity)
+            input#inputQuantity.form-control(type='text', name='quantity', placeholder='e.g. 1', data-parsley-type="number", required='', value=medication.quantity)
         .form-group
           label.col-sm-5.control-label(for='inputUnit') Units *
           .col-sm-7
-            input#inputUnit.form-control(type='text', name='unit', placeholder='Unit', required='', data-parsley-maxlength='20', data-parsley-maxlength-message="This field can't have more than 20 characters", value=medication.units)
+            input#inputUnit.form-control(type='text', name='unit', placeholder='e.g. tablet', required='', data-parsley-maxlength='20', data-parsley-maxlength-message="This field can't have more than 20 characters", value=medication.units)
         .form-group 
           label.col-sm-5.control-label(for='selectFrequency') Frequency *
           .col-sm-7
@@ -28,4 +39,4 @@
         .form-group
           label.col-sm-5.control-label(for='inputRemarks') Remarks
           .col-sm-7
-            input#inputRemarks.form-control(type='text', name='remark', placeholder='Remarks', value=medication.remarks)
+            input#inputRemarks.form-control(type='text', name='remark', value=medication.remarks)

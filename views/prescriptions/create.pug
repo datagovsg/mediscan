@@ -7,7 +7,7 @@ block styles
 block content
   h2 Create New Prescription
 
-  form#formPrescription.form-horizontal.col-lg-5(name='formPrescription', method='POST', action='/prescriptions', data-parsley-validate='')
+  form#formPrescription.form-horizontal.col-lg-5(name='formPrescription', method='POST', action='/api/prescriptions/create', data-parsley-validate='')
     include _form
 
     script.

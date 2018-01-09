@@ -6,10 +6,10 @@ const moment = require('moment');
 const Medication = require('./medication');
 const Message = require('./message');
 const cfg = require('../config');
-const Twilio = require('twilio');
 const {HOURS} = require('../constants');
 
 const prescriptionSchema = new mongoose.Schema({
+  name: String,
   patientPhoneNumber: String,
   caregiverPhoneNumbers: [String],
   medications: [{type: mongoose.Schema.Types.ObjectId, ref: 'Medication'}],
@@ -50,10 +50,14 @@ prescriptionSchema.methods.sendReminder = async function() {
   }
 
   const message = new Message({
+    prescriptionId: this._id,
     sentTime: Date.now(),
     repliedTime: null,
+    retriedTime: null,
+    alertTime: null,
     medications: _.map(this.medications, (id) => mongoose.Types.ObjectId(id)),
   });
+
   await message.save();
 
   const body = _.map(
@@ -62,31 +66,12 @@ prescriptionSchema.methods.sendReminder = async function() {
       `${name}, ${quantity} ${units}, ${remarks}`
   ).join('\n');
   const url = `${cfg.rootUrl}messages/${message._id}/reply`;
-  await this.sendNotification(
+  await Message.sendMessage(
+    this.patientPhoneNumber,
     `Hi ${
       this.name
     },\n\n${body}\n\nClick ${url} after you have taken your medicine`
   );
-};
-
-prescriptionSchema.methods.sendNotification = async function(body) {
-  const client = new Twilio(cfg.twilioAccountSid, cfg.twilioAuthToken);
-
-  // Send the message!
-  try {
-    await client.messages.create({
-      to: `+65 ${this.patientPhoneNumber}`,
-      from: cfg.twilioPhoneNumber,
-      body,
-    });
-  } catch (e) {
-    console.error(e);
-  }
-
-  // Log the last few digits of a phone number
-  let masked = this.phoneNumber.substr(0, this.phoneNumber.length - 5);
-  masked += '*****';
-  console.log(`Message sent to ${masked}`);
 };
 
 const Prescription = mongoose.model('Prescription', prescriptionSchema);
