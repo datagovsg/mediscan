@@ -14,7 +14,8 @@ block content
             td  !{prescription._id}
             td  !{prescription.patientPhoneNumber}
             td  !{prescription.medications.length}
-
+            td
+              a.btn.btn-success.btn-sm(href=`/prescriptions/view/${prescription._id}`) View
             td
               form(action="/prescriptions/" + prescription._id + "/delete",method="POST")
                 button.btn.btn-danger.btn-sm(type='submit') Delete

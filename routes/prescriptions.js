@@ -46,6 +46,23 @@ router.get('/prescriptions', async (req, res) => {
   res.render('prescriptions/index', {prescriptions: prescriptions});
 });
 
+// GET: /prescriptions/view/:id
+router.get('/prescriptions/view/:id', async function(req, res) {
+  // Prescription id
+  let id = req.params.id;
+  const prescription = await Prescription.findOne({_id: id});
+  // Generate QR code that redirects to patient view (client)
+  const qrCode = await prescription.generateQR();
+  // Map medication IDs to medication objects in prescription object
+  prescription.medications = await Medication.find({
+    _id: {$in: prescription.medications},
+  });
+  res.render('prescriptions/view',
+    {
+      prescription: prescription, qrCode: qrCode,
+    });
+});
+
 // GET: /prescriptions/create
 router.get('/prescriptions/create', function(req, res, next) {
   res.render('prescriptions/create', {
@@ -121,7 +138,6 @@ router.post('/', async (req, res) => {
 
     // Send the first message
     prescription.sendNotification(`Hi ${name},\n\nWelcome to Mediscan!`);
-
     res.redirect('/');
   } catch (error) {
     console.log(error);

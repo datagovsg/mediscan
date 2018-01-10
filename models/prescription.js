@@ -3,10 +3,11 @@
 const _ = require('lodash');
 const mongoose = require('mongoose');
 const moment = require('moment');
+const QRCode = require('qrcode');
 const Medication = require('./medication');
 const Message = require('./message');
 const cfg = require('../config');
-const {HOURS} = require('../constants');
+const {HOURS, CLIENT_URL} = require('../constants');
 
 const prescriptionSchema = new mongoose.Schema({
   name: String,
@@ -72,6 +73,14 @@ prescriptionSchema.methods.sendReminder = async function() {
       this.name
     },\n\n${body}\n\nClick ${url} after you have taken your medicine`
   );
+};
+
+prescriptionSchema.methods.generateQR = async function() {
+  try {
+    return await QRCode.toDataURL(`${CLIENT_URL}${this._id}`);
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 const Prescription = mongoose.model('Prescription', prescriptionSchema);

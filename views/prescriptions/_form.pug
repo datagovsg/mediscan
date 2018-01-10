@@ -1,16 +1,3 @@
-.form-group
-  label.col-sm-6.control-label(for='inputName') Name *
-  .col-sm-6
-    input#inputName.form-control(type='text', name='name', required='', data-parsley-maxlength='20', data-parsley-maxlength-message="This field can't have more than 20 characters", value='')
-.form-group
-  label.col-sm-6.control-label(for='inputName') Patient Phone Number *
-  .col-sm-6
-    input#inputPatientNumber.form-control(type='text', name='patientPhoneNumber', placeholder='e.g. 91234567', required='', data-parsley-maxlength='20', data-parsley-maxlength-message="This field can't have more than 20 characters", value='')
-.form-group
-  label.col-sm-6.control-label(for='inputName') Caregiver Phone Number *
-  .col-sm-6
-    input#inputCaregivertNumber.form-control(type='text', name='caregiverPhoneNumber', placeholder='e.g. 91234567', data-parsley-maxlength='20', data-parsley-maxlength-message="This field can't have more than 20 characters", value='')
-
 .panel-group#medicationGroup
   each medication, index in prescription.medications
     .panel.panel-default

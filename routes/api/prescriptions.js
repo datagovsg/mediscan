@@ -8,6 +8,7 @@ const PhoneNumber = require('../../models/phoneNumber');
 const Message = require('../../models/message');
 const router = new express.Router();
 
+
 // GET: /prescriptions
 router.get('/', async (req, res) => {
   try {
@@ -81,9 +82,11 @@ router.post('/create', async (req, res) => {
       ..._.map(medications, (medication) => medication.save()),
     ]);
 
-    // Send the first message
-    Message.sendMessage(req.body.patientPhoneNumber, 
-      `Hi ${req.body.name},\n\nWelcome to Mediscan!`);
+    if(req.body.patientPhoneNumber) {
+      // Send the first message
+      Message.sendMessage(req.body.patientPhoneNumber,
+        `Hi ${req.body.name},\n\nWelcome to Mediscan!`);
+    }
   } catch (e) {
     console.error(e);
     res.status(500).send(e);

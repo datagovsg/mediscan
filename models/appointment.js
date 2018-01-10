@@ -3,7 +3,6 @@
 const mongoose = require('mongoose');
 const moment = require('moment');
 const cfg = require('../config');
-const Message = require('../models/message');
 const Twilio = require('twilio');
 
 const AppointmentSchema = new mongoose.Schema({
@@ -61,19 +60,6 @@ AppointmentSchema.statics.sendNotifications = function(callback) {
                         appointment.phoneNumber.length - 5);
                     masked += '*****';
                     console.log(`Message sent to ${masked}`);
-                    // Medication array is set to empty for now
-                    const message = new Message({
-                      sentTime: Date.parse(moment().format()) || 0,
-                      repliedTime: null,
-                      medication: [],
-                    });
-
-                    message.save()
-                    .then(function() {
-                      console.log('Message has been saved.');
-                    }).catch(function(err) {
-                      console.log(err);
-                    });
                 }
             });
         });

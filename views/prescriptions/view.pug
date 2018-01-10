@@ -1,0 +1,15 @@
+extends ../layout
+
+block content
+  h2 View Prescription
+  p Prescription id: #{prescription._id}
+  p Medication count: #{prescription.medications.length}
+  img(src=qrCode)
+  each medication in prescription.medications
+    .panel-group
+    .panel.panel-default
+      .panel-heading !{medication.name}
+      .panel-body
+        p Quantity: !{medication.quantity}
+        p Units: !{medication.units}
+        p Remarks: !{medication.remarks}
