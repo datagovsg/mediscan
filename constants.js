@@ -5,7 +5,10 @@ const HOURS = {
   NIGHT: 22,
 };
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL =
+  process.env.NODE_ENV === 'production'
+    ? 'http://mediscan.herokuapp.com/api'
+    : 'http://localhost:3000/api';
 
 const CLIENT_URL = 'http://mediscan.surge.sh/#/';
 
