@@ -138,7 +138,7 @@ router.post('/', async (req, res) => {
 
     // Send the first message
     prescription.sendNotification(`Hi ${name},\n\nWelcome to Mediscan!`);
-    res.redirect('/');
+    res.redirect(`/prescriptions/view/${prescription._id}`);
   } catch (error) {
     console.log(error);
   }
