@@ -8,7 +8,6 @@ const PhoneNumber = require('../../models/phoneNumber');
 const Message = require('../../models/message');
 const router = new express.Router();
 
-
 // GET: /prescriptions
 router.get('/', async (req, res) => {
   try {
@@ -82,10 +81,12 @@ router.post('/create', async (req, res) => {
       ..._.map(medications, (medication) => medication.save()),
     ]);
 
-    if(req.body.patientPhoneNumber) {
+    if (req.body.patientPhoneNumber) {
       // Send the first message
-      Message.sendMessage(req.body.patientPhoneNumber,
-        `Hi ${req.body.name},\n\nWelcome to Mediscan!`);
+      Message.sendMessage(
+        req.body.patientPhoneNumber,
+        `Hi ${req.body.name},\n\nWelcome to Mediscan!`
+      );
     }
   } catch (e) {
     console.error(e);
@@ -135,11 +136,16 @@ router.post('/:id/verify', async (req, res) => {
       verificationCode: req.body.verificationCode,
     });
     if (phoneNumber !== undefined) {
-      await Prescription.update(
-        {_id: phoneNumber.prescription},
-        {patientPhoneNumber: phoneNumber.phoneNumber}
-      );
+      const prescription = await Prescription.findOne({
+        _id: phoneNumber.prescription,
+      });
+      prescription.patientPhoneNumber = phoneNumber.phoneNumber;
+      await prescription.save();
       await phoneNumber.remove();
+      await Message.sendMessage(
+        phoneNumber.phoneNumber,
+        'Welcome to Mediscan! You will receive notifications when your medicine is due.'
+      );
       res.send();
     }
     res.status(404).send();
