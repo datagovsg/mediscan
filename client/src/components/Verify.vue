@@ -1,5 +1,8 @@
 <template lang="html">
-  <div class="container has-text-centered">
+  <div v-if="isVerified" class="container has-text-centered">
+    <button class="button is-large is-primary" @click="window.close()">Done</button>
+  </div>
+  <div v-else class="container has-text-centered">
     <b-field position="is-centered">
       <b-input class="digit" size="is-large" v-model="digit1" ref="digit1" @input="$refs.digit2.focus()" autofocus></b-input>
       <b-input class="digit" size="is-large" v-model="digit2" ref="digit2" @input="$refs.digit3.focus()"></b-input>
@@ -21,6 +24,7 @@ export default {
 
   data () {
     return {
+      isVerified: false,
       digit1: '',
       digit2: '',
       digit3: '',
@@ -47,7 +51,8 @@ export default {
           type: 'is-success',
           queue: false
         })
-        this.$router.push(`/${this.id}`)
+        this.isVerified = true
+        // this.$router.push(`/${this.id}`)
       } catch (e) {
         this.$toast.open({
           message: e,
