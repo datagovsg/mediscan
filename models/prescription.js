@@ -71,9 +71,7 @@ prescriptionSchema.methods.sendReminder = async function(hour) {
   const url = `${cfg.rootUrl}messages/${message._id}/reply`;
   await Message.sendMessage(
     this.patientPhoneNumber,
-    `Hi ${
-      this.name
-    },\n\n${body}\n\nClick ${url} after you have taken your medicine`
+    `${body}\n\nClick ${url} after you have taken your medicine`
   );
 };
 
