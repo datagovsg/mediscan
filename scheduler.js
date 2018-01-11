@@ -8,7 +8,7 @@ const schedulerFactory = function() {
   return {
     start: function() {
       new CronJob(
-        '0 0 * * * *', // Every 60 minutes
+        '0 0 * * * *', // Every hour
         function() {
           console.log(
             'Running Send Notifications Worker for ' + moment().format()
@@ -20,11 +20,9 @@ const schedulerFactory = function() {
         ''
       );
       new CronJob(
-        '0 00,30 * * * *', // Every 30 minutes
+        '0 15 * * * *', // Every 15th minute
         function() {
-          console.log(
-            'Running Send Retry Worker for ' + moment().format()
-          );
+          console.log('Running Send Retry Worker for ' + moment().format());
           workers.retryWorkerFactory.run();
         },
         null,
@@ -32,7 +30,7 @@ const schedulerFactory = function() {
         ''
       );
       new CronJob(
-        '0 00,30 * * * *', // Every 30 minutes
+        '0 30 * * * *', // Every 30th minute
         function() {
           console.log(
             'Running Send Notifications Worker for ' + moment().format()
