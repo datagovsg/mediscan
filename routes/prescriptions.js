@@ -158,4 +158,8 @@ router.delete('/:id', async (req, res) => {
   res.redirect('/');
 });
 
+router.get('/prescriptions/report', async (req, res) => {
+  res.render('prescriptions/report', {});
+})
+
 module.exports = router;
