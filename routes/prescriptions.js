@@ -82,12 +82,9 @@ router.get('/prescriptions/create', function(req, res, next) {
   });
 });
 
-// POST: /prescriptionis/remind
-router.post('/:id/remind', async (req, res) => {
-  const id = req.params.id;
-  const prescription = await Prescription.findOne({_id: id});
-  await prescription.sendReminder();
-
+// GET: /prescriptions/remind
+router.get('/remind/:hour', async (req, res) => {
+  await Prescription.sendReminders(req.params.hour);
   res.send();
 });
 
@@ -137,7 +134,6 @@ router.post('/', async (req, res) => {
     ]);
 
     // Send the first message
-    prescription.sendNotification(`Hi ${name},\n\nWelcome to Mediscan!`);
     res.redirect(`/prescriptions/view/${prescription._id}`);
   } catch (error) {
     console.log(error);

@@ -31,16 +31,18 @@ function getFrequenciesToRemind(hour) {
   }
 }
 
-prescriptionSchema.statics.sendReminders = async function() {
+prescriptionSchema.statics.sendReminders = async function(hour) {
   const prescriptions = await Prescription.find();
   await Promise.all(
-    _.map(prescriptions, (prescription) => prescription.sendReminder())
+    _.map(prescriptions, (prescription) => prescription.sendReminder(hour))
   );
 };
 
-prescriptionSchema.methods.sendReminder = async function() {
+prescriptionSchema.methods.sendReminder = async function(hour) {
   // Fetch all medications with reminders due
-  const frequencies = getFrequenciesToRemind(parseInt(moment().format('H')));
+  const frequencies = getFrequenciesToRemind(
+    parseInt(hour || moment().format('H'))
+  );
   const medications = await Medication.find({
     _id: {$in: this.medications},
     frequency: {$in: frequencies},

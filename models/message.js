@@ -14,22 +14,16 @@ const messageSchema = new mongoose.Schema({
   medications: [{type: mongoose.Schema.Types.ObjectId, ref: 'Medication'}],
 });
 
-
-messageSchema.methods.sendRetries = async function() {
-	const messages = await Message.find();
-	await Promise.all(
-		_.map(messages, (message) => message.sendRetry())
-	);
+messageSchema.statics.sendRetries = async function() {
+  const messages = await Message.find();
+  await Promise.all(_.map(messages, (message) => message.sendRetry()));
 };
 
 messageSchema.methods.sendRetry = async function() {
-	const prescription = await Prescription.find({_id: this.prescriptionId});
+  const prescription = await Prescription.find({_id: this.prescriptionId});
 
-	if (!this.repliedTime && !this.retriedTime) {
-		await this.update(
-      {_id: this._id},
-      {$set: {retriedTime: Date.now()}}
-    );
+  if (!this.repliedTime && !this.retriedTime) {
+    await this.update({_id: this._id}, {$set: {retriedTime: Date.now()}});
 
     const body = _.map(
       this.medications,
@@ -40,28 +34,21 @@ messageSchema.methods.sendRetry = async function() {
     const url = `${cfg.rootUrl}messages/${message._id}/reply`;
     await sendMessage(
       prescription.patientPhoneNumber,
-      `Reminder: Hi ${
-        this.name
-      },\n\n${body}\n\nClick ${url} after you have taken your medicine`
+      `Reminder: ${body}\n\nClick ${url} after you have taken your medicine`
     );
-	}
+  }
 };
 
-messageSchema.methods.sendAlerts = async function() {
+messageSchema.statics.sendAlerts = async function() {
   const messages = await Message.find();
-  await Promise.all(
-    _.map(messages, (message) => message.sendAlert())
-  );
+  await Promise.all(_.map(messages, (message) => message.sendAlert()));
 };
 
 messageSchema.methods.sendAlert = async function() {
   const prescription = await Prescription.find({_id: this.prescriptionId});
 
   if (!this.repliedTime && this.retriedTime && !this.alertTime) {
-    await this.update(
-      {_id: this._id},
-      {$set: {alertTime: Date.now()}}
-    );
+    await this.update({_id: this._id}, {$set: {alertTime: Date.now()}});
 
     const body = _.map(
       this.medications,
@@ -70,20 +57,22 @@ messageSchema.methods.sendAlert = async function() {
     ).join('\n');
 
     await Promise.all(
-      _.map(prescription.caregiverPhoneNumbers,
+      _.map(
+        prescription.caregiverPhoneNumbers,
         async (caregiverPhoneNumber) => {
           await sendMessage(
             caregiverPhoneNumber,
             `Alert: ${
-              this.name
-            },\nHas not eaten the following medication:\n${body}`
+              prescription.patientPhoneNumber
+            } has not eaten the following medication:\n${body}`
           );
-        })
+        }
+      )
     );
   }
 };
 
-const sendMessage = async function(phoneNumber, body) {
+messageSchema.statics.sendMessage = async function(phoneNumber, body) {
   const client = new Twilio(cfg.twilioAccountSid, cfg.twilioAuthToken);
 
   // Send the message!
@@ -105,7 +94,4 @@ const sendMessage = async function(phoneNumber, body) {
 
 const Message = mongoose.model('Message', messageSchema);
 
-module.exports = {
-	Message: Message,
-	sendMessage: sendMessage,
-};
+module.exports = Message;
