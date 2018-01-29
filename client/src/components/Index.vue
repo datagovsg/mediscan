@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="container has-text-centered">
-    <p class="title">I am a</p>
+    <p class="title">I am a...</p>
     <p class="title"><button class="button is-large is-primary" @click="patient">Patient</button></p>
     <p class="title"><button class="button is-large is-primary" @click="caregiver">Caregiver</button></p>
   </div>
