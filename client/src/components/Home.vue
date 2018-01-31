@@ -30,16 +30,17 @@
       </div>
     </custom-section>
     <!-- Solution section -->
-    <custom-section class="section is-large">
+    <custom-section class="section is-medium">
       <div class="hero-body">
         <div class="container">
           <h1 class="title">
             Our solution
           </h1>
           <div class="columns">
-            <div class="column">1</div>
-            <div class="column">2</div>
-            <div class="column">3</div>
+            <div v-for="image in images" v-bind:key="image.src" class="column">
+              <img :src="image.src" />
+              <p class="subtitle">{{image.description}}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -48,6 +49,9 @@
 </template>
 
 <script>
+  import image1 from '../assets/mediscan-homepage.png'
+  import image2 from '../assets/mediscan-remind-me.png'
+  import image3 from '../assets/mediscan-messages.png'
   import CustomSection from './Section.vue'
 
   import 'vue-awesome/icons/github'
@@ -86,8 +90,19 @@
         {
           name: 'Kevin Chu',
           link: 'https://github.com/1kc'
-        }
-        ]
+        }],
+        images: [{
+          description: 'Website to handle all reminder operations',
+          src: image1
+        },
+        {
+          description: 'Scan and key in mobile number for setup',
+          src: image2
+        },
+        {
+          description: 'Text reminders with link for acknowledgement',
+          src: image3
+        }]
       }
     },
     components: {
