@@ -5,7 +5,6 @@ const express = require('express');
 const path = require('path');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
-const swaggerJSDoc = require('swagger-jsdoc');
 const argv = require('minimist')(process.argv.slice(2));
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -22,42 +21,12 @@ const subpath = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-// uncomment after placing your favicon in /public
-// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.locals.moment = require('moment');
-
-// swagger definition
-let swaggerDefinition = {
-  info: {
-    title: 'Node Swagger API',
-    version: '1.0.0',
-    description: 'Demonstrating how to describe a RESTful API with Swagger',
-  },
-  host: 'localhost:3000',
-  basePath: '/',
-};
-
-// options for the swagger docs
-let options = {
-  // import swaggerDefinitions
-  swaggerDefinition: swaggerDefinition,
-  // path to the API docs
-  apis: ['./routes/api/*.js'],
-};
-
-// initialize swagger-jsdoc
-let swaggerSpec = swaggerJSDoc(options);
-// serve swagger
-app.get('/swagger.json', function(req, res) {
-  res.setHeader('Content-Type', 'application/json');
-  res.send(swaggerSpec);
-});
 
 app.use('/documentation',
   express.static(path.join(__dirname, 'public', 'dist')));
