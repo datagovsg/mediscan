@@ -5,6 +5,7 @@ const express = require('express');
 const path = require('path');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
+const argv = require('minimist')(process.argv.slice(2));
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
@@ -14,6 +15,7 @@ const messagesApi = require('./routes/api/messages');
 const scheduler = require('./scheduler');
 
 const app = express();
+const subpath = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -27,6 +29,49 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.locals.moment = require('moment');
+
+app.use('/documentation',
+  express.static(path.join(__dirname, 'swagger_ui', 'dist')));
+
+let swagger = require('swagger-node-express').createNew(subpath);
+
+swagger.setApiInfo({
+  title: 'Mediscan API',
+  description: 'Mediscan API description',
+  termsOfServiceUrl: '',
+  contact: 'ratsjosh@outlook.com',
+  license: '',
+  licenseUrl: '',
+});
+
+app.get('/documentation', function(req, res) {
+  res.sendFile(__dirname + '/swagger_ui/dist/index.html');
+});
+
+swagger.setAppHandler(subpath);
+
+// Configure the API domain
+let domain = 'localhost';
+if(argv.domain !== undefined) {
+  domain = argv.domain;
+}	else {
+  console.log('No --domain=xxx specified, taking default hostname "localhost".');
+}
+
+// Configure the API port
+let port = 3000;
+if(argv.port !== undefined) {
+  port = argv.port;
+} else {
+  console.log('No --port=xxx specified, taking default port ' + port + '.');
+}
+
+// Set and display the application URL
+let applicationUrl = 'http://' + domain + ':' + port + '/documentation';
+console.log('snapJob API running on ' + applicationUrl);
+
+
+swagger.configure(applicationUrl, '1.0.0');
 
 // ROUTE
 

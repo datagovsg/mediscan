@@ -160,6 +160,6 @@ router.delete('/:id', async (req, res) => {
 
 router.get('/prescriptions/report', async (req, res) => {
   res.render('prescriptions/report', {});
-})
+});
 
 module.exports = router;
