@@ -1,12 +1,12 @@
 <template lang="html">
-  <div class="container has-text-centered">
+  <div class="container has-text-centered" id="main-container">
     <b-field position="is-centered">
       <p class="control">
         <span class="button is-large is-static">+65</span>
       </p>
       <b-input size="is-large" v-model="phoneNumber"></b-input>
     </b-field>
-    <button class="button is-large is-primary" @click="submit">Remind me!</button>
+    <button class="button is-large is-info" @click="submit">Remind me!</button>
   </div>
 </template>
 
@@ -54,6 +54,8 @@ export default {
 }
 </script>
 
-<style lang="css">
-
+<style lang="css" scoped>
+  #main-container {
+    margin-top: 10px;
+  }
 </style>
