@@ -1,5 +1,54 @@
 # Mediscan
 
+##  How to run (2018-01-31)
+```
+cd mediscan
+npm install
+cd client
+npm install 
+```
+
+Check if client works
+
+`npm run dev`
+
+Start db and client; remember to change credentials in `.env`
+``` 
+cd ../mediscan
+cp .env.example .env
+npm run db 
+npm run dev 
+``` 
+
+## Current branches (2018-01-31)
+
+- `swagger-ui`
+
+    - localhost:3000/documentation 
+    
+- `client`
+
+    - mediscan.surge.sh/#/home (for more info about the service)
+    - mediscan.surge.sg/#/:id (subscribe to service)
+        
+- `master`
+
+    - mediscan.herokuapp.com (A simulation of a system that can call the endpoint to generate the QR code)
+    - Currently a CRON job runs on the herokuapp to sms subscribers
+    - localhost:3000 
+        
+done:
+
+- patient can receive sms
+- patient can verify that he has taken the medicine
+- doctor can create new prescription 
+    
+todo: 
+
+- dsd heroku
+- api for stopping sms (right now you have to stop the cron job or clear the database)
+- adherence / display report of patient
+
 ## Meeting - 3 January 2018
 
 ### Discussion
