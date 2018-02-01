@@ -47,7 +47,14 @@
         "produces": "application/json",
         "responses": {
           "200": {
-            "description": "An array of messages"
+            "description": "An array of messages",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/ApiResponses/Messages"
+                }
+              }
+            }
           }
         },
         "schema": {
@@ -56,7 +63,7 @@
         }
       }
     },
-    "/messages/:id/reply": {
+    "/messages/{id}/reply": {
       "get": {
         "tags": [
           "message"
@@ -80,7 +87,7 @@
         }]
       }
     },
-    "/prescriptions/:id/subscribe": {
+    "/prescriptions/{id}/subscribe": {
       "post": {
         "tags": [
           "prescription"
@@ -99,9 +106,8 @@
         "parameters": [{
             "in": "path",
             "name": "id",
-            "description": "Numeric ID of the prescription to get",
-            "type": "integer",
-            "format": "int32",
+            "description": "ID of the prescription to get",
+            "type": "string",
             "required": true
           },
           {
@@ -109,7 +115,7 @@
             "name": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/ApiParameters/Subscribe"
+              "$ref": "#/components/ApiParameters/Subscribe"
             },
             "description": "Mobile phone number to send verification code"
           }
@@ -119,7 +125,7 @@
             "description": "Verification code sent to mobile phone"
           },
           "500": {
-            "description": "Error"
+            "description": "Internal Server Error"
           }
         },
         "security": [{
@@ -130,7 +136,7 @@
         }]
       }
     },
-    "/prescriptions/:id/verify": {
+    "/prescriptions/{id}/verify": {
       "post": {
         "tags": [
           "prescription"
@@ -146,17 +152,15 @@
           "application/xml",
           "application/json"
         ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ApiParameters/Verify"
-            },
-            "description": "Mobile phone number and verification code for verification"
-          }
-        ],
+        "parameters": [{
+          "in": "body",
+          "name": "body",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/ApiParameters/Verify"
+          },
+          "description": "Mobile phone number and verification code for verification"
+        }],
         "responses": {
           "200": {
             "description": "Welcome message sent to mobile phone"
@@ -165,7 +169,7 @@
             "description": "Phone number cannot be found!"
           },
           "500": {
-            "description": "Error"
+            "description": "Internal Server Error"
           }
         },
         "security": [{
@@ -235,7 +239,7 @@
           "type": "string"
         },
         "quantity": {
-          "type": "Number",
+          "type": "number",
           "description": "The amount to take per day"
         },
         "units": {
@@ -256,9 +260,8 @@
     "Prescription": {
       "type": "object",
       "properties": {
-        "name": {
-          "type": "string",
-          "example": "Panadol"
+        "id": {
+          "type": "integer"
         },
         "patientPhoneNumber": {
           "type": "string",
@@ -303,7 +306,9 @@
       "xml": {
         "name": "PhoneNumber"
       }
-    },
+    }
+  },
+  "components": {
     "ApiParameters": {
       "Subscribe": {
         "type": "object",
@@ -333,13 +338,43 @@
           }
         },
         "xml": {
-          "name": "Subscribe"
+          "name": "Verify"
         }
       }
+    },
+    "ApiResponses": {
+      "Messages": {
+        "type": "object",
+        "properties": {
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/Message"
+            }
+          }
+        },
+        "xml": {
+          "name": "Messages"
+        }
+      },
+      "Prescriptions": {
+        "type": "object",
+        "properties": {
+          "prescriptions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/Prescription"
+            }
+          },
+          "xml": {
+            "name": "Verify"
+          }
+        }
+      }
+    },
+    "externalDocs": {
+      "description": "Find out more about Swagger",
+      "url": "http://swagger.io"
     }
-  },
-  "externalDocs": {
-    "description": "Find out more about Swagger",
-    "url": "http://swagger.io"
   }
 }
