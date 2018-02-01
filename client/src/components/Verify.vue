@@ -6,7 +6,7 @@
           Almost there...
         </h1>
         <h2 class="subtitle">
-          You will recieve an SMS shortly
+          You will receive an SMS shortly
         </h2>
         <p>
           Click to be redirected back to home
