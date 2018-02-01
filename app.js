@@ -46,6 +46,10 @@ app.get('/documentation', function(req, res) {
   res.sendFile(path.join(__dirname, 'public', 'dist', 'index.html'));
 });
 
+app.get('/swagger.json', function(req, res) {
+  res.sendFile(path.join(__dirname, 'public', 'dist', 'api-docs.json'));
+});
+
 swagger.setAppHandler(subpath);
 
 // Configure the API domain
