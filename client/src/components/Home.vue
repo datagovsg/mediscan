@@ -49,7 +49,7 @@
 </template>
 
 <script>
-  import image1 from '../assets/mediscan-homepage.png'
+  import image1 from '../assets/mediscan-qr-code.png'
   import image2 from '../assets/mediscan-remind-me.png'
   import image3 from '../assets/mediscan-messages.png'
   import CustomSection from './Section.vue'
@@ -92,11 +92,11 @@
           link: 'https://github.com/1kc'
         }],
         images: [{
-          description: 'Website to handle all reminder operations',
+          description: 'Scan the QR code on your medication',
           src: image1
         },
         {
-          description: 'Scan and key in mobile number for setup',
+          description: 'Visit website and key in mobile number',
           src: image2
         },
         {
