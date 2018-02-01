@@ -87,6 +87,80 @@
         }]
       }
     },
+    "/prescriptions": {
+      "get": {
+        "tags": [
+          "prescription"
+        ],
+        "summary": "Return all prescription",
+        "description": "",
+        "operationId": "getAllPrescritons",
+        "produces": "application/json",
+        "responses": {
+          "200": {
+            "description": "An array of prescription"
+          }
+        }
+      }
+    },
+    "/prescriptions/create": {
+      "post": {
+        "tags": [
+          "prescription"
+        ],
+        "parameters": [{
+          "required": true,
+          "in": "body",
+          "name": "medicine",
+          "schema": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/Medication"
+            }
+          }
+        }],
+        "summary": "Create a prescription",
+        "description": "",
+        "operationId": "createPrescritons",
+        "produces": "application/json",
+        "responses": {
+          "200": {
+            "description": "redirect user to index page"
+          },
+          "500": {
+            "description": "internal server error"
+          }
+        }
+      }
+    },
+    "/prescriptions/{id}": {
+      "delete": {
+        "tags": [
+          "prescription"
+        ],
+        "parameters": [{
+          "required": true,
+          "in": "path",
+          "name": "id",
+          "description": "prescription Id",
+          "schema": {
+            "type": "integer"
+          }
+        }],
+        "summary": "Deletes a prescription",
+        "description": "",
+        "operationId": "deletePrescriptions",
+        "produces": "application/json",
+        "responses": {
+          "200": {
+            "description": "prescription is deleted"
+          },
+          "500": {
+            "description": "internal server error"
+          }
+        }
+      }
+    },
     "/prescriptions/{id}/subscribe": {
       "post": {
         "tags": [
