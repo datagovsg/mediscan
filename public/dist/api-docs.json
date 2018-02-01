@@ -41,7 +41,7 @@
         "tags": [
           "message"
         ],
-        "summary": "Return all messages",
+        "summary": "Returns all messages",
         "description": "",
         "operationId": "getAllMessages",
         "produces": "application/json",
@@ -68,7 +68,7 @@
         "tags": [
           "message"
         ],
-        "summary": "Update an existing message replied time",
+        "summary": "Updates an existing message replied time",
         "description": "",
         "operationId": "updateMessage",
         "parameters": [{
@@ -100,7 +100,7 @@
         "tags": [
           "prescription"
         ],
-        "summary": "Return all prescription",
+        "summary": "Returns all prescriptions",
         "description": "",
         "operationId": "getAllPrescritons",
         "produces": "application/json",
@@ -127,7 +127,7 @@
             }
           }
         }],
-        "summary": "Create a prescription",
+        "summary": "Creates a prescription",
         "description": "",
         "operationId": "createPrescritons",
         "produces": "application/json",
