@@ -71,6 +71,14 @@
         "summary": "Update an existing message replied time",
         "description": "",
         "operationId": "updateMessage",
+        "parameters": [{
+          "in": "path",
+          "name": "id",
+          "description": "ID of the message to get",
+          "type": "string",
+          "required": true
+          }
+        ],
         "responses": {
           "200": {
             "description": "Done!"
