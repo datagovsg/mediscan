@@ -24,7 +24,7 @@
       }
     },
     {
-      "name": "Prescription",
+      "name": "prescription",
       "description": "Operations about prescriptions",
       "externalDocs": {
         "description": "Find out more about mediscan",
@@ -72,14 +72,108 @@
             "description": "No such message!"
           }
         },
-        "security": [
+        "security": [{
+          "mediscan_auth": [
+            "write:message",
+            "read:message"
+          ]
+        }]
+      }
+    },
+    "/prescriptions/:id/subscribe": {
+      "post": {
+        "tags": [
+          "prescription"
+        ],
+        "summary": "Generates and sends a random verification code to the specified phone number",
+        "description": "",
+        "operationId": "subscribeToPrescription",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [{
+            "in": "path",
+            "name": "id",
+            "description": "Numeric ID of the prescription to get",
+            "type": "integer",
+            "format": "int32",
+            "required": true
+          },
           {
-            "mediscan_auth": [
-              "write:message",
-              "read:message"
-            ]
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiParameters/Subscribe"
+            },
+            "description": "Mobile phone number to send verification code"
           }
-        ]
+        ],
+        "responses": {
+          "200": {
+            "description": "Verification code sent to mobile phone"
+          },
+          "500": {
+            "description": "Error"
+          }
+        },
+        "security": [{
+          "mediscan_auth": [
+            "write:message",
+            "read:message"
+          ]
+        }]
+      }
+    },
+    "/prescriptions/:id/verify": {
+      "post": {
+        "tags": [
+          "prescription"
+        ],
+        "summary": "Checks the verification code and add to prescription if valid",
+        "description": "",
+        "operationId": "verifySubscription",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiParameters/Verify"
+            },
+            "description": "Mobile phone number and verification code for verification"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Welcome message sent to mobile phone"
+          },
+          "404": {
+            "description": "Phone number cannot be found!"
+          },
+          "500": {
+            "description": "Error"
+          }
+        },
+        "security": [{
+          "mediscan_auth": [
+            "write:message",
+            "read:message"
+          ]
+        }]
       }
     }
   },
@@ -185,6 +279,62 @@
       },
       "xml": {
         "name": "Prescription"
+      }
+    },
+    "PhoneNumber": {
+      "type": "object",
+      "properties": {
+        "phoneNumber": {
+          "type": "string",
+          "example": "12345678",
+          "description": "8 digit mobile phone number"
+        },
+        "verificationCode": {
+          "type": "string",
+          "description": "4 random generated digits"
+        },
+        "prescription": {
+          "type": "object",
+          "schema": {
+            "$ref": "#/definitions/Prescription"
+          }
+        }
+      },
+      "xml": {
+        "name": "PhoneNumber"
+      }
+    },
+    "ApiParameters": {
+      "Subscribe": {
+        "type": "object",
+        "properties": {
+          "phoneNumber": {
+            "type": "string",
+            "example": "12345678",
+            "description": "8 digit mobile phone number"
+          }
+        },
+        "xml": {
+          "name": "Subscribe"
+        }
+      },
+      "Verify": {
+        "type": "object",
+        "properties": {
+          "phoneNumber": {
+            "type": "string",
+            "example": "12345678",
+            "description": "8 digit mobile phone number"
+          },
+          "verificationCode": {
+            "type": "string",
+            "example": "1234",
+            "description": "4 random generated digits"
+          }
+        },
+        "xml": {
+          "name": "Subscribe"
+        }
       }
     }
   },
