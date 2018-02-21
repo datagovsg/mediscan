@@ -4,6 +4,9 @@ const _ = require('lodash');
 const express = require('express');
 const Prescription = require('../models/prescription');
 const Medication = require('../models/medication');
+const Message = require('../models/message');
+const mongoose = require('mongoose');
+const cfg = require('../config');
 const router = new express.Router();
 
 // GET: /prescriptions
@@ -160,6 +163,38 @@ router.delete('/:id', async (req, res) => {
 
 router.get('/prescriptions/report', async (req, res) => {
   res.render('prescriptions/report', {});
+})
+
+//Hacky for presenting
+router.get('/prescriptions/send/:id', async (req, res)=>{
+  try {  
+      let id = req.params.id;
+      const prescription = await Prescription.findOne({_id: id});
+      if(prescription && prescription.patientPhoneNumber !== undefined){
+        let medications = await Medication.find({
+          _id: {$in: prescription.medications},
+        });
+        
+        const body = _.map(
+          medications,
+          ({name, quantity, units, frequency, remarks}) =>
+            `${name}, ${quantity} ${units}, ${remarks}`
+        ).join('\n');
+        let message_id =  Math.random().toString(36).substring(2) + (new Date()).getTime().toString(36)
+        /*const url = `${cfg.rootUrl}/messages/${message_id}/reply`;
+        await Message.sendMessage(
+          prescription.patientPhoneNumber,
+          `${body}\n\nClick ${url} after you have taken your medicine`
+        );*/
+        res.send();
+      }
+     
+    res.status(404).send();
+  } catch (e) {
+    console.error(e);
+    res.status(500).send(e);
+  }
+  res.send();
 })
 
 module.exports = router;
