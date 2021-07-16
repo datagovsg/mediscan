@@ -47,7 +47,7 @@
     "pug": "^2.0.0-beta.12",
     "qrcode": "^1.2.0",
     "serve-favicon": "~2.3.0",
-    "twilio": "~3.0.0-rc.13"
+    "twilio": "~3.64.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
